@@ -5,7 +5,7 @@ use sysinfo::{CpuExt, System, SystemExt};
 #[tokio::main]
 async fn main() {
     let router = Router::new()
-        .route("/", get(root_get))
+        .route("/", get(get_root))
         .with_state(AppState {
             sys: Arc::new(Mutex::new(System::new())),
         });
@@ -22,7 +22,7 @@ struct AppState {
     sys: Arc<Mutex<System>>,
 }
 
-async fn root_get(State(state): State<AppState>) -> String {
+async fn get_root(State(state): State<AppState>) -> String {
     use std::fmt::Write;
 
     let mut s = String::new();
