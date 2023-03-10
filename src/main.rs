@@ -5,7 +5,7 @@ use sysinfo::{CpuExt, System, SystemExt};
 #[tokio::main]
 async fn main() {
     let router = Router::new()
-        .route("/", get(get_root))
+        .route("/", get(index))
         .route("/api/get_cpus", get(get_cpus))
         .with_state(AppState {
             sys: Arc::new(Mutex::new(System::new())),
@@ -23,7 +23,7 @@ struct AppState {
     sys: Arc<Mutex<System>>,
 }
 
-async fn get_root() -> &'static str {
+async fn index() -> &'static str {
     "Hello world"
 }
 
