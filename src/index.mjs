@@ -21,7 +21,7 @@ function App(props) {
 let url = new URL("/realtime/cpus", window.location.href);
 url.protocol = url.protocol.replace("http", "ws");
 
-let ws = new WebSocket("/realtime/cpus");
+let ws = new WebSocket(url.href);
 ws.onmessage = (ev) => {
     console.log(JSON.parse(ev.data));
     render(html`<${App} cpus=${json}></${App}>`, document.body);
