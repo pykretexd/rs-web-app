@@ -18,16 +18,11 @@ function App(props) {
     `;
 }
 
-let update = async () => {
-    let response = await fetch('/api/cpus');
-    if (response.status !== 200) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+let url = new URL("/realtime/cpus", window.location.href);
+url.protocol = url.protocol.replace("http", "ws");
 
-    let json = await response.json();
-
+let ws = new WebSocket("/realtime/cpus");
+ws.onmessage = (ev) => {
+    console.log(JSON.parse(ev.data));
     render(html`<${App} cpus=${json}></${App}>`, document.body);
-}
-
-update();
-setInterval(update, 200);
+};
