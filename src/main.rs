@@ -4,14 +4,27 @@ use sysinfo::{CpuExt, System, SystemExt};
 
 #[tokio::main]
 async fn main() {
+    let app_state = AppState::default();
+    
     let router = Router::new()
         .route("/", get(index))
         .route("/index.mjs", get(index_mjs))
         .route("/index.css", get(index_css))
         .route("/api/cpus", get(cpus))
-        .with_state(AppState {
-            sys: Arc::new(Mutex::new(System::new())),
-        });
+        .with_state(app_state.clone());
+    
+    tokio::task::spawn_blocking(move || {
+        let mut sys = System::new();
+
+        loop {
+            sys.refresh_cpu();
+            let v: Vec<_> = sys.cpus().iter().map(|cpu| cpu.cpu_usage()).collect();
+            let mut cpus = app_state.cpus.lock().unwrap();
+            *cpus = v;
+
+            std::thread::sleep(System::MINIMUM_CPU_UPDATE_INTERVAL);
+        }
+    });
 
     let server = Server::bind(&"0.0.0.0:7032".parse().unwrap()).serve(router.into_make_service());
     let address = server.local_addr();
@@ -20,9 +33,9 @@ async fn main() {
     server.await.unwrap();
 }
 
-#[derive(Clone)]
+#[derive(Default, Clone)]
 struct AppState {
-    sys: Arc<Mutex<System>>,
+    cpus: Arc<Mutex<Vec<f32>>>
 }
 
 #[axum::debug_handler]
@@ -54,9 +67,6 @@ async fn index_css() -> impl IntoResponse {
 
 #[axum::debug_handler]
 async fn cpus(State(state): State<AppState>) -> impl IntoResponse {
-    let mut sys = state.sys.lock().unwrap();
-    sys.refresh_cpu();
-    
-    let v: Vec<_> = sys.cpus().iter().map(|cpu| cpu.cpu_usage()).collect();
+    let v = state.cpus.lock().unwrap().clone();
     Json(v)
 }
