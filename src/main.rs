@@ -78,7 +78,7 @@ async fn cpus(State(state): State<AppState>) -> impl IntoResponse {
 #[axum::debug_handler]
 async fn realtime_cpus(State(state): State<AppState>, ws: WebSocketUpgrade) -> impl IntoResponse {
     ws.on_upgrade(|ws: WebSocket| async {
-        realtime_cpus_stream(state, ws).await;
+        realtime_cpus_stream(state, ws).await
     });
 }
 
