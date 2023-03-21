@@ -6,7 +6,7 @@ use sysinfo::{CpuExt, System, SystemExt};
 async fn main() {
     let router = Router::new()
         .route("/", get(index))
-        .route("/index.js", get(index_js))
+        .route("/index.mjs", get(index_mjs))
         .route("/api/cpus", get(cpus))
         .with_state(AppState {
             sys: Arc::new(Mutex::new(System::new())),
@@ -32,8 +32,8 @@ async fn index() -> impl IntoResponse {
 }
 
 #[axum::debug_handler]
-async fn index_js() -> impl IntoResponse {
-    let markup = tokio::fs::read_to_string("src/index.js").await.unwrap();
+async fn index_mjs() -> impl IntoResponse {
+    let markup = tokio::fs::read_to_string("src/index.mjs").await.unwrap();
 
     Response::builder()
         .header("content-type", "application/javascript;charset=utf-8")
