@@ -24,8 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let json = await response.json();
 
-        const app = h('pre', null, JSON.stringify(json, null, 2));
-
         render(html`<${App} cpus=${json}></${App}>`, document.body);
     }, 1000);
 });
