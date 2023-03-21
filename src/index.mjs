@@ -1,3 +1,5 @@
+import { h, Component, render } from 'https://esm.sh/preact';
+
 document.addEventListener("DOMContentLoaded", () => {
     setInterval(async () => {
         let response = await fetch('/api/cpus');
@@ -7,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let json = await response.json();
 
-        document.body.textContent = JSON.stringify(json, null, 2);
+        const app = h('pre', null, JSON.stringify(json, null, 2));
+
+        render(app, document.body);
     }, 1000);
 });
