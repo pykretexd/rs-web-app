@@ -1,3 +1,3 @@
-# Fullstack web application using rust + preact
+# Web resource monitor using rust + preact
 
-Resource monitor showing CPU usage live in your browser.
+Fullstack web application showing CPU usage live in your browser.
