@@ -8,7 +8,10 @@ function App(props) {
         <div>
             ${props.cpus.map((cpu) => {
                 return html`
-                    <div>${cpu.toFixed(2)}% usage</div>
+                    <div class="bar">
+                        <label>${cpu.toFixed(2)}%</label>
+                        <div class="bar-inner" style="width: ${cpu}%"></div>
+                    </div>
                 `;
             })}
         </div>
