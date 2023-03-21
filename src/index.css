@@ -5,11 +5,11 @@
 }
 
 body {
-    background: #EDF6F9;
+    background: #121212;
 }
 
 .bar {
-    background: #FFDDD2;
+    background: #134741;
     width: 20em;
     height: 1em;
     margin: 1em;
@@ -22,7 +22,7 @@ body {
 }
 
 .bar .bar-inner {
-    background: #E29578;
+    background: #2A9D8F;
     height: 100%;
 
     position: absolute;
