@@ -19,8 +19,11 @@ async fn main() {
         loop {
             sys.refresh_cpu();
             let v: Vec<_> = sys.cpus().iter().map(|cpu| cpu.cpu_usage()).collect();
-            let mut cpus = app_state.cpus.lock().unwrap();
-            *cpus = v;
+
+            {
+                let mut cpus = app_state.cpus.lock().unwrap();
+                *cpus = v;
+            }
 
             std::thread::sleep(System::MINIMUM_CPU_UPDATE_INTERVAL);
         }
