@@ -10,6 +10,8 @@ body {
 
 .bar {
     background: #134741;
+    color: white;
+
     width: 20em;
     height: 1em;
     margin: 1em;
