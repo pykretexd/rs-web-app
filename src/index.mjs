@@ -23,6 +23,6 @@ url.protocol = url.protocol.replace("http", "ws");
 
 let ws = new WebSocket(url.href);
 ws.onmessage = (ev) => {
-    console.log(JSON.parse(ev.data));
+    let json = JSON.parse(ev.data);
     render(html`<${App} cpus=${json}></${App}>`, document.body);
 };
